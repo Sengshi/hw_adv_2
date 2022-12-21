@@ -32,25 +32,22 @@ def inspect_phonebook(phonebook):
                          r'(\(*)(доб)*(\.*)(\s*)(\d+)*(\)*)'
     number_pattern_new = r'+7(\4)\8-\11-\14\15\17\18\19\20'
     contacts_correct_2 = corrected_book(number_pattern_raw, number_pattern_new, contacts_correct_1)
-    # print(contacts_correct_2)
+
     # task 3
     contacts_correct_3 = list()
     temp_dict = dict()
-    double_dict = dict()
     for i in contacts_correct_2:
         count = 0
         if any(' '.join(i[:3]) in keys for keys in temp_dict.keys()):
-            double_dict[' '.join(i[:3])] = i[3:]
+            doubles = i[3:]
             filter_obj = list(filter(lambda name: ' '.join(i[:3]) in name, temp_dict.keys()))
             while count <= 3:
-                temp_date = temp_dict[filter_obj[0]][count]
-                double_date = double_dict[' '.join(i[:3])][count]
-                if temp_date != double_date and temp_date == '' and double_date != '':
-                    temp_dict[filter_obj[0]][count] = double_date
+                temp_data = temp_dict[filter_obj[0]][count]
+                if temp_data != doubles[count] and temp_data == '' and doubles[count] != '':
+                    temp_dict[filter_obj[0]][count] = doubles[count]
                 count += 1
         else:
             temp_dict[' '.join(i[:3])] = i[3:]
-
     for k, v in temp_dict.items():
         line = k.split() + v
         contacts_correct_3.append(line)
