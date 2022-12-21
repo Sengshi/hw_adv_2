@@ -32,25 +32,28 @@ def inspect_phonebook(phonebook):
                          r'(\(*)(доб)*(\.*)(\s*)(\d+)*(\)*)'
     number_pattern_new = r'+7(\4)\8-\11-\14\15\17\18\19\20'
     contacts_correct_2 = corrected_book(number_pattern_raw, number_pattern_new, contacts_correct_1)
-
+    # print(contacts_correct_2)
     # task 3
-    for i in contacts_correct_2:
-        for j in contacts_correct_2:
-            if i[0] == j[0] and i[1] == j[1] and i is not j:
-                if not i[2]:
-                    i[2] = j[2]
-                if not i[3]:
-                    i[3] = j[3]
-                if not i[4]:
-                    i[4] = j[4]
-                if not i[5]:
-                    i[5] = j[5]
-                if not i[6]:
-                    i[6] = j[6]
     contacts_correct_3 = list()
-    for card in contacts_correct_2:
-        if card not in contacts_correct_3:
-            contacts_correct_3.append(card)
+    temp_dict = dict()
+    double_dict = dict()
+    for i in contacts_correct_2:
+        count = 0
+        if any(' '.join(i[:3]) in keys for keys in temp_dict.keys()):
+            double_dict[' '.join(i[:3])] = i[3:]
+            filter_obj = list(filter(lambda name: ' '.join(i[:3]) in name, temp_dict.keys()))
+            while count <= 3:
+                temp_date = temp_dict[filter_obj[0]][count]
+                double_date = double_dict[' '.join(i[:3])][count]
+                if temp_date != double_date and temp_date == '' and double_date != '':
+                    temp_dict[filter_obj[0]][count] = double_date
+                count += 1
+        else:
+            temp_dict[' '.join(i[:3])] = i[3:]
+
+    for k, v in temp_dict.items():
+        line = k.split() + v
+        contacts_correct_3.append(line)
 
     # TODO 2: сохраните получившиеся данные в другой файл
     # код для записи файла в формате CSV
